@@ -5,8 +5,8 @@
 #include <regex>
 #include <string>
 #include <vector>
-
 #include "exceptions.h"
+
 class Worker {
 protected:
 	int count_of_in_args;
@@ -17,6 +17,7 @@ public:
 	virtual void Run(std::vector<std::string>& in_text_in_lines) = 0;
 };
 
+
 class ReadWorker : public Worker {
 private:
 	std::string file_name_;
@@ -25,6 +26,7 @@ public:
 	ReadWorker(std::vector<std::string>& args);
 	void Run(std::vector<std::string>& in_text_in_lines) override;
 };
+
 
 class WriteWorker : public Worker {
 private:
@@ -35,6 +37,7 @@ public:
 	void Run(std::vector<std::string>& in_text_in_lines) override;
 };
 
+
 class GrepWorker : public Worker {
 private:
 	std::string word_;
@@ -44,11 +47,13 @@ public:
 	void Run(std::vector<std::string>& in_text_in_lines) override;
 };
 
+
 class SortWorker : public Worker {
 public:
 	SortWorker(std::vector<std::string>& args);
 	void Run(std::vector<std::string>& in_text_in_lines) override;
 };
+
 
 class ReplaceWorker : public Worker {
 private:
@@ -59,6 +64,7 @@ public:
 	ReplaceWorker(std::vector<std::string>& args);
 	void Run(std::vector<std::string>& in_text_in_lines) override;
 };
+
 
 class DumpWorker : public Worker {
 private:
