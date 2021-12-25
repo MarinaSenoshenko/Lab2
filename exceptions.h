@@ -56,4 +56,26 @@ public:
 	const char* what() const noexcept override;
 };
 
+class IException : public std::exception {
+protected:
+	const char* text{};
+public:
+	virtual const char* what() = 0;
+};
+
+class WorkflowException : public IException {
+public:
+	explicit WorkflowException(const char* new_text) {
+		text = new_text;
+	}
+	const char* what() override;
+};
+
+class WorkerException : public IException {
+public:
+	explicit WorkerException(const char* new_text) {
+		text = new_text;
+	}
+	const char* what() override;
+};
 #endif
