@@ -2,10 +2,16 @@
 #define EXCEPTIONS_H_
 #include <exception>
 #include <string>
+#include <system_error>
+
+class FileException : public std::runtime_error {
+public:
+	FileException(std::string fileName);
+};
 
 class BlockBeginningException : public std::exception {
 public:
-	const char* what() const noexcept override;
+	const char *what() const noexcept override;
 };
 
 class BlockSyntaxException : public std::exception {
