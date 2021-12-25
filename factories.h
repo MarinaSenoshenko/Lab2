@@ -1,41 +1,59 @@
 #ifndef FACTORIES_H_
 #define FACTORIES_H_
-
 #include "workers.h"
+#include "exeption.h"
 
-class BaseFactory {
+class IWorker {
 public:
-	virtual Worker* CreateWorker(std::vector<std::string>& args) = 0;
+	virtual std::list<std::string>& work(std::list<std::string>& answer_data) = 0;
+	virtual void setArgs(const std::list<std::string>& block_data) = 0;
 };
 
-class ReadFactory : public BaseFactory {
+class IFactory {
 public:
-	Worker* CreateWorker(std::vector<std::string>& args) override;
+	virtual std::unique_ptr<IWorker> createWorker() = 0;
+};
+ 
+class ReadFactory : public IFactory {
+public:
+	std::unique_ptr<IWorker> createWorker() override { 
+		return std::make_unique<ReadFile>(); 
+	}
 };
 
-class WriteFactory : public BaseFactory {
+class WriteFactory : public IFactory {
 public:
-	Worker* CreateWorker(std::vector<std::string>& args) override;
+	std::unique_ptr<IWorker> createWorker() override { 
+		return std::make_unique<ReadFile>(); 
+	}
 };
 
-class GrepFactory : public BaseFactory {
+class GrepFactory : public IFactory {
 public:
-	Worker* CreateWorker(std::vector<std::string>& args) override;
+	std::unique_ptr<IWorker> createWorker() override { 
+		return std::make_unique<ReadFile>(); 
+	}
 };
 
-class SortFactory : public BaseFactory {
+class SortFactory : public IFactory {
 public:
-	Worker* CreateWorker(std::vector<std::string>& args) override;
+	std::unique_ptr<IWorker> createWorker() override { 
+		return std::make_unique<ReadFile>(); 
+	}
 };
 
-class ReplaceFactory : public BaseFactory {
+class ReplaceFactory : public IFactory {
 public:
-	Worker* CreateWorker(std::vector<std::string>& args) override;
+	std::unique_ptr<IWorker> createWorker() override { 
+		return std::make_unique<ReadFile>(); 
+	}
 };
 
-class DumpFactory : public BaseFactory {
+class DumpFactory : public IFactory {
 public:
-	Worker* CreateWorker(std::vector<std::string>& args) override;
+	std::unique_ptr<IWorker> createWorker() override { 
+		return std::make_unique<ReadFile>(); 
+	}
 };
 
 #endif
