@@ -1,59 +1,75 @@
-#ifndef FACTORIES_H_
-#define FACTORIES_H_
-#include "workers.h"
-#include "exeption.h"
+#include <string>
+#include <vector>
+#include <regex>
+#include <algorithm>
+#include "exceptions.h"
 
-class IWorker {
+using namespace std;
+
+
+class Worker {
 public:
-	virtual std::list<std::string>& work(std::list<std::string>& answer_data) = 0;
-	virtual void setArgs(const std::list<std::string>& block_data) = 0;
+	virtual void Execute() = 0;
+	virtual pair<bool, bool> GetIO() const = 0;
 };
 
-class IFactory {
+class Reader : public Worker {
+protected:
+	const string fileName;
+	vector<string>* data;
 public:
-	virtual std::unique_ptr<IWorker> createWorker() = 0;
-};
- 
-class ReadFactory : public IFactory {
-public:
-	std::unique_ptr<IWorker> createWorker() override { 
-		return std::make_unique<ReadFile>(); 
-	}
+	Reader(vector<string>* data, const string fileName = "");
+	virtual void Execute();
+	virtual pair<bool, bool> GetIO() const;
 };
 
-class WriteFactory : public IFactory {
+class Grepper : public Worker {
+private:
+	vector<string>* data;
+	vector<string> new_data;
+	const string word;
 public:
-	std::unique_ptr<IWorker> createWorker() override { 
-		return std::make_unique<ReadFile>(); 
-	}
+	Grepper(vector<string>* data, const string word = "");
+	virtual void Execute();
+	virtual pair<bool, bool> GetIO() const;
 };
 
-class GrepFactory : public IFactory {
+class Writer : public Worker {
+private:
+	string fileName;
+	vector<string>* data;
 public:
-	std::unique_ptr<IWorker> createWorker() override { 
-		return std::make_unique<ReadFile>(); 
-	}
+	Writer(vector<string>* data, string fileName = "");
+	virtual void Execute();
+	virtual pair<bool, bool> GetIO() const;
 };
 
-class SortFactory : public IFactory {
+class Sorter : public Worker {
+private:
+	vector<string>* data;
 public:
-	std::unique_ptr<IWorker> createWorker() override { 
-		return std::make_unique<ReadFile>(); 
-	}
+	Sorter(vector<string>* data);
+	virtual void Execute();
+	virtual pair<bool, bool> GetIO() const;
 };
 
-class ReplaceFactory : public IFactory {
+class Replacer : public Worker {
+private:
+	vector<string>* data;
+	const string word1;
+	const string word2;
 public:
-	std::unique_ptr<IWorker> createWorker() override { 
-		return std::make_unique<ReadFile>(); 
-	}
+	Replacer(vector<string>* data, const string word1 = "", const string word2 = "");
+	virtual void Execute();
+	virtual pair<bool, bool> GetIO() const;
 };
 
-class DumpFactory : public IFactory {
+class Dumper : public Worker {
+private:
+	const string fileName;
+	vector<string>* data;
 public:
-	std::unique_ptr<IWorker> createWorker() override { 
-		return std::make_unique<ReadFile>(); 
-	}
+	Dumper(vector<string>* data, const string fileName = "");
+	virtual void Execute();
+	virtual pair<bool, bool> GetIO() const;
 };
-
-#endif
