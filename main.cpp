@@ -1,25 +1,21 @@
-#include "config_handler.h"
+#include "config.h"
+#include "constants.h"
 
-int main(int argc, char* argv[1]) {
+int main(int argc, char** argv) {
 	string file_name = "workflow.txt";
-
 	try {
-		if (argc != 2) {
-			throw WorkflowException("Bad number of args");
+		if (argc != ARGS_NUMBER) {
+			file_name = argv[FIRST_ARG];
+			ConfigExecutor ex(file_name);
+			ex.Execute();
 		}
-		file_name = argv[1];
-		ConfExecutor ex(file_name);
-		ex.Execute();
 	}
 
-	catch (WorkerException& exc1) {
-		std::cout << exc1.what() << std::endl;
-		return 1;
-	}
-	catch (WorkflowException& exc2) {
-		std::cout << exc2.what() << std::endl;
-		return 1;
+	catch (exception& ex) {
+		cout << "System error: " << ex.what() << endl;
+		return EXIT;
 	}
 
 	return 0;
 }
+
